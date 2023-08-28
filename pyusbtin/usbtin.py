@@ -293,13 +293,14 @@ class USBtin(object):
                                 listener(canmsg)
                         elif cmd in 'zZ':
                             # remove first message from transmit fifo and send next one
-                            self.tx_fifo.pop(0)
-
                             try:
-                                self.send_first_tx_fifo_message()
-                            except USBtinException as e:
-                                logger.critical(e)
-
+                                self.tx_fifo.pop(0)
+                                try:
+                                    self.send_first_tx_fifo_message()
+                                except USBtinException as e:
+                                    logger.critical(e)
+                            except IndexError:
+                                pass
                         # clear message
                         self.incoming_message = ""
 
